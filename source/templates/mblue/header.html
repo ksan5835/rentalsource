@@ -1,0 +1,98 @@
+﻿<?php require_once('../config.php'); ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>CRS - Administrator Login</title>
+<link rel="stylesheet" type="text/css" href="<?php echo SITE_ROOT; ?>/templates/mblue/css/style.css" />
+<link type='text/css' href='<?php echo SITE_ROOT; ?>/templates/mblue/css/basic.css' rel='stylesheet' media='screen' />
+<!-- IE6 "fix" for the close png image -->
+<!--[if lt IE 7]>
+<link type='text/css' href='css/basic_ie.css' rel='stylesheet' media='screen' />
+<![endif]-->
+<script type='text/javascript' src='<?php echo SITE_ROOT; ?>/templates/mblue/js/jquery-1.8.2.min.js'></script>
+<script type='text/javascript' src='<?php echo SITE_ROOT; ?>/templates/mblue/js/jquery.simplemodal.js'></script>
+<script type='text/javascript' src='<?php echo SITE_ROOT; ?>/templates/mblue/js/basic.js'></script>
+
+<!-- Start Form Validation-->
+<link rel="stylesheet" href="<?php echo SITE_ROOT; ?>/templates/mblue/css/validationEngine.jquery.css" type="text/css"/>
+<link rel="stylesheet" href="<?php echo SITE_ROOT; ?>/templates/mblue/css/template.css" type="text/css"/>
+<script src="<?php echo SITE_ROOT; ?>/templates/mblue/js/jquery.validationEngine-en.js" type="text/javascript" charset="utf-8"></script>
+<script src="<?php echo SITE_ROOT; ?>/templates/mblue/js/jquery.validationEngine.js" type="text/javascript" charset="utf-8"></script>
+<!-- End Form Validation-->
+
+<script type='text/javascript' src='<?php echo SITE_ROOT; ?>/templates/mblue/js/kendo.all.min.js'></script>
+<link rel="stylesheet" href="<?php echo SITE_ROOT; ?>/templates/mblue/css/kendo.common.min.css" type="text/css"/>
+<link rel="stylesheet" href="<?php echo SITE_ROOT; ?>/templates/mblue/css/kendo.default.min.css" type="text/css"/>
+
+<!-- Calander  Validation-->
+<link rel="stylesheet" href="//code.jquery.com/ui/1.10.4/themes/smoothness/jquery-ui.css">
+<script src="//code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
+<link rel="stylesheet" href="/resources/demos/style.css">
+<!-- Calander Validation-->
+
+<link rel="stylesheet" type="text/css" href="<?php echo SITE_ROOT; ?>/templates/mblue/css/demo_table.css" />
+<script type='text/javascript' src='<?php echo SITE_ROOT; ?>/templates/mblue/js/jquery.dataTables.js'></script>
+
+<!-- Notifications -->
+ 
+ <script type="text/javascript" src="<?php echo SITE_ROOT; ?>/templates/mblue/js/jquery-notify.js"></script>
+  <script type="text/javascript" src="<?php echo SITE_ROOT; ?>/templates/mblue/js/jquery-contnotify.js"></script>
+    <script type="text/javascript" src="<?php echo SITE_ROOT; ?>/templates/mblue/js/jquery-usernotify.js"></script>
+ <link rel="stylesheet" href="<?php echo SITE_ROOT; ?>/templates/mblue/css/notify.css" type="text/css"/>
+ 
+
+
+</head>
+<body>
+<div class="maindiv">
+<table width="100%" cellpadding="0" cellspacing="0">
+<tr><td class="navbar-inner">
+<?php if((@$_SESSION['susername'] != "") and (@$_SESSION['spassword'] != "")) { ?>
+	
+<div class="topnav">
+<table>
+<tr>
+<td>
+<span class="logo">
+<?php if(@$_SESSION['sprofile'] == 1) { ?>
+Chennai Rental Systems
+<?php } else if(@$_SESSION['sprofile'] == 2) { ?>
+Bhuvan Systems
+<?php } ?>
+</span>
+</td>
+<td>
+
+<ul>
+<li><a href="index.php">Home</a></li>
+<?php if(@$_SESSION['srole'] == "admin")  { ?>
+<li><a href="index.php?option=com_pos&view=users">Users</a></li>
+<?php } ?>
+<li><a href="index.php?option=com_pos&view=clients">Clients</a></li>
+<li><a href="index.php?option=com_pos&view=invoice_details">Invoice</a></li>
+<li><a href="index.php?option=com_pos&view=new_leads">New Leads</a></li>
+<li><a href="index.php?option=com_pos&view=accounts">Accounts</a></li>
+<li><a href="index.php?option=com_pos&view=service">Service Call</a></li>
+<li><a href="index.php?option=com_user&task=logout">Logout</a></li>
+</ul>
+</td>
+</tr>
+</table>
+</div>
+
+<?php	} else { ?>
+<?php if(@$_SESSION['sprofile'] == 1) { ?>
+Chennai Rental Systems
+<?php } else if(@$_SESSION['sprofile'] == 2) { ?>
+Bhuvan Systems
+<?php } ?>	
+<?php } ?>
+
+
+
+
+
+</td></tr>
+<tr>
+<td align="left">
