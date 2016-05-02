@@ -651,6 +651,8 @@ class com_pos_Controller {
 		$rentalCategory = $objPage->getRentalCategory();
 		$totCat = count($rentalCategory);		
 		
+		$arrsystemVendor = array("caltech","caltechravi","bhuvansankar","bhuvanarun","bhuvanvenkat","bhuvanmaha");
+		
 		$catID = @$cDetails['system_type'];
 			
 		$strCategory = "<select name='txtSysType' id='txtSysType' onchange='changeStyType' class='textinputcommon validate[required]'>";
@@ -661,8 +663,20 @@ class com_pos_Controller {
 		}
 		$strCategory .= "</select>";
 		
+		
+		//for system vendor category
+		$strSystemVendor = "<select name='txtSysVendor' id='txtSysVendor' onchange='changeStyType' class='textinputcommon validate[required]'>";
+		for($i=0;$i<count($arrsystemVendor);$i++){
+			
+			$strSystemVendor .= "<option ".$selected." value='".$arrsystemVendor[$i]."'>".$arrsystemVendor[$i]."</option>";
+		
+		}
+		$strSystemVendor .= "</select>";
+		
+		
 		$strReturn .='
 		<table>
+		<tr><td>System Vendor: '.$strSystemVendor.'</td></tr>
 		<tr><td>System Type: '.$strCategory.'		
 		
 		</td>

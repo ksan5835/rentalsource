@@ -104,7 +104,7 @@ if($clientSysDet)
 	});	
 	
 	jQuery('.rstpwd').click(function(){		
-		jQuery('#updatedeadline').modal({minHeight:380,minWidth:350});			
+		jQuery('#updatedeadline').modal({minHeight:450,minWidth:350});			
 	});	
 	
 	jQuery('.edit').click(function(){		
