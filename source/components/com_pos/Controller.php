@@ -76,9 +76,21 @@ class com_pos_Controller {
 				//$arrInsertData['record_id'] = $recId;
 				$objPage->updateSystemTrashStatus($recId);
 			break;
+			case "newsystemdelete":
+			 	$recId = $_POST['recid'];
+				$objPage = new possale();
+				//$arrInsertData['table_name'] = "client";
+				//$arrInsertData['record_id'] = $recId;
+				$objPage->updateNewSystemTrashStatus($recId);
+			break;
 			case "systemform":
 			    $cid = $_POST['cid'];
 				$rtText = $this->getSystemForm($cid);
+				echo $rtText;
+			break;
+			case "systemnewform":
+			    $cid = $_POST['cid'];
+				$rtText = $this->getNewSystemForm($cid);
 				echo $rtText;
 			break;
 			case "onOfficeSysForm":
@@ -88,6 +100,9 @@ class com_pos_Controller {
 			break;
 			case "addupdateSysInfo":
 				$this->insertUpdateSysInfo($_POST);
+			break;
+			case "addupdateNewSysInfo":
+				$this->insertUpdateNewSysInfo($_POST);
 			break;
 			case "updatePaymentStatus":
 				$this->updatePaymentStatusInfo($_POST);
@@ -413,6 +428,13 @@ class com_pos_Controller {
 		header("location: index.php?option=com_pos&view=client_view&cid=".$arrData['cId']);		
 	}
 	
+	function insertUpdateNewSysInfo($arrData)
+	{			
+		$objPage = new possale();
+		$objPage->insertUpdateNewSysInfo($arrData);
+		header("location: index.php?option=com_pos&view=system_details");		
+	}
+	
 	function updatePaymentStatusInfo($arrData)
 	{			
 		$objPage = new possale();
@@ -694,6 +716,66 @@ class com_pos_Controller {
 		
 		return $strReturn;
 	}
+	
+	function getNewSystemForm($id="")
+	{
+		$objPage = new possale();
+		$cDetails = $objPage->getNewSysInfoDetailsById($id);
+		
+		$rentalCategory = $objPage->getRentalCategory();
+		$totCat = count($rentalCategory);		
+		
+		$arrsystemVendor = array("caltech","caltechravi","bhuvan","bhuvansankar","bhuvanarun","bhuvanvenkat","bhuvanmaha");
+		
+		$catID = @$cDetails['system_type'];
+		
+		$sysVendor = @$cDetails['vendor_type'];
+			
+		$strCategory = "<select name='txtSysType' id='txtSysType' onchange='changeStyType' class='textinputcommon validate[required]'>";
+		for($i=0;$i<$totCat;$i++){
+			
+			$selected = ($catID == $rentalCategory[$i]['category_meta']) ? "selected = 'selected'" : "";			
+			$strCategory .= "<option ".$selected." value='".$rentalCategory[$i]['category_meta']."'>".$rentalCategory[$i]['category_meta']."</option>";
+		}
+		$strCategory .= "</select>";
+		
+		
+		//for system vendor category
+		$strSystemVendor = "<select name='txtSysVendor' id='txtSysVendor' onchange='changeStyType' class='textinputcommon validate[required]'>";
+		for($i=0;$i<count($arrsystemVendor);$i++){
+			
+			$selected = ($sysVendor == $arrsystemVendor[$i]) ? "selected = 'selected'" : "";
+			$strSystemVendor .= "<option ".$selected." value='".$arrsystemVendor[$i]."'>".$arrsystemVendor[$i]."</option>";
+		
+		}
+		$strSystemVendor .= "</select>";
+		
+		$s_no = "SYS-".time();
+		
+		if(isset($cDetails['serial_no'])){
+			$cDetails['serial_no'] = $cDetails['serial_no'];
+		}else{
+			$cDetails['serial_no'] = $s_no;
+		}
+		
+		@$strReturn .='
+		<table>
+		<tr><td>Rental Type: <br />'.$strCategory.'</td><td>Serial No: <br /><input type="readonly" name="txtSerial" class="textinputcommon" value="'.@$cDetails['serial_no'].'" /></td></tr>
+		<tr><td>Processor Type: <br /><input type="text" name="processor_model" class="textinputcommon validate[required]" value="'.@$cDetails['processor_model'].'" /></td><td>Generation:<br /><input type="text" name="processor_gen" class="textinputcommon validate[required]" value="'.@$cDetails['processor_gen'].'" /></td></tr>
+		<tr><td>RAM Capacity / Brand: <br /><input type="text" name="ram_capacity" class="textinputcommon validate[required]" value="'.@$cDetails['ram_capacity'].'" /></td><td>&nbsp;</td></tr>
+		<tr><td>HDD Size / Brand: <br /><input type="text" name="hdd_capacity" class="textinputcommon validate[required]" value="'.@$cDetails['hdd_capacity'].'" /></td><td>&nbsp;</td></tr>
+		<tr><td>Monitor Size / Brand: <br /><input type="text" name="monitor_size" class="textinputcommon validate[required]" value="'.@$cDetails['monitor_size'].'" /></td><td>&nbsp;</td></tr>
+		<tr><td>Keyboard Type / Brand:<br /><input type="text" name="key_type" id="txtShortDes" class="textinputcommon validate[required]" value="'.@$cDetails['key_type'].'" /></td>
+		<td>Mouse Type / Brand:<br /><input type="text" name="mouse_type" class="textinputcommon validate[required]" value="'.@$cDetails['mouse_type'].'" /></td></tr>
+		<tr><td colspan="2">Other details<br /><textarea name="txtDes" class="textAreacommon validate[required]">'.@$cDetails['other_peripherals'].'</textarea></td></tr>
+		<tr><td colspan="2" align="center"><input type="submit" class="btnsubmit" value="Save" /></td></tr>
+		</table>
+		<input type="hidden" id="recid" name="recid" value="'.$id.'" />
+		';
+		
+		return $strReturn;
+	}
+	
 	
 	
 	function getOnOfficeSysForm($id="")

@@ -226,6 +226,36 @@ class possale {
 		}		
 	}
 	
+	public function insertUpdateNewSysInfo($arrData)
+	{		
+		$db = new dbquery();
+		
+		//print_r($arrData);die;
+		$arrInsert['system_type'] = $arrData['txtSysType'];
+		$arrInsert['serial_no'] = $arrData['txtSerial'];
+		$arrInsert['processor_model'] = $arrData['processor_model'];
+		$arrInsert['processor_gen'] = $arrData['processor_gen'];
+		$arrInsert['ram_capacity'] = $arrData['ram_capacity'];
+		$arrInsert['hdd_capacity'] = $arrData['hdd_capacity'];
+		$arrInsert['monitor_size'] = $arrData['monitor_size'];
+		$arrInsert['key_type'] = $arrData['key_type'];
+		$arrInsert['mouse_type'] = $arrData['mouse_type'];
+		$arrInsert['other_peripherals'] = $arrData['txtDes'];
+		$arrInsert['last_update_date'] = date("Y-m-d H:i:s");
+
+				
+		if(@$arrData['recid'] > 0)
+		{	
+		   $sid = $arrData['recid'];	
+			unset($arrData['recid']);	
+			$db->update_table($arrInsert,TBL_PREFIX.'system_details_track',$sid );
+		}
+		else
+		{
+			$db->insert_table($arrInsert,TBL_PREFIX.'system_details_track');
+		}		
+	}
+	
 	public function saveOnofficeSys($arrData)
 	{		
 		$db = new dbquery();
@@ -296,6 +326,17 @@ class possale {
 		return $clientlists;
 	}
 	
+	public function getClientNewSysDetails($extrasql = "")
+	{	
+		$extrasql = ($extrasql) ? " and ".$extrasql : "";
+		$db = new dbquery();		
+		$query = mysql_query("SELECT * from ".TBL_PREFIX."system_details_track where trash_status = 0 ".$extrasql);
+		while ($row = mysql_fetch_assoc($query)) {
+			$clientlists[] =  $row;
+		}
+		return $clientlists;
+	}
+	
 	public function getOnofficeSys($extrasql = "")
 	{	
 		$extrasql = ($extrasql) ? " and ".$extrasql : "";
@@ -321,6 +362,13 @@ class possale {
 	public function getSysInfoDetailsById($id)
 	{		
 		$query = mysql_query("SELECT * from ".TBL_PREFIX."system_details where id='".$id."' and profile_type='".$_SESSION['sprofile']."'");
+		$clientlists = @mysql_fetch_array($query);
+		return @$clientlists;
+	}
+	
+	public function getNewSysInfoDetailsById($id)
+	{		
+		$query = mysql_query("SELECT * from ".TBL_PREFIX."system_details_track where id='".$id."'");
 		$clientlists = @mysql_fetch_array($query);
 		return @$clientlists;
 	}
@@ -977,6 +1025,18 @@ class possale {
 	{
 		//$query = mysql_query("update ".TBL_PREFIX."client set active='no' where id = ".$recID);
 		$query = mysql_query("update ".TBL_PREFIX."system_details set trash_status='1',rental_status='no' where id = ".$recID);
+	}
+	
+	public function updateNewClientTrashStatus($recID)
+	{
+		$query = mysql_query("update ".TBL_PREFIX."client set active='no' where id = ".$recID);
+		$query = mysql_query("update ".TBL_PREFIX."system_details_track set rental_status='no' where client_id = ".$recID);
+	}
+	
+	public function updateNewSystemTrashStatus($recID)
+	{
+		//$query = mysql_query("update ".TBL_PREFIX."client set active='no' where id = ".$recID);
+		$query = mysql_query("update ".TBL_PREFIX."system_details_track set trash_status='1',rental_status='no' where id = ".$recID);
 	}
 	
 	
