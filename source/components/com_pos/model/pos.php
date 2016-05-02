@@ -701,7 +701,7 @@ class possale {
 		  $returntext = "";
 		  
 		  $cid = $arrData['client_id'];		
-		  
+		  $invoiceVendor = $arrData['txtSysVendor'];	
 		 
 		  $extraquery = "rental_status='yes'";
 		  @$sDetails = $this->getClientSysDetails($cid,$extraquery);
@@ -806,7 +806,7 @@ class possale {
 			  $arrDataInv['admin_id'] = $_SESSION['suserid'];
 			  $arrDataInv['invoice_amount'] = $strTotal;
 			  $arrDataInv['invoice_date'] = date("Y-m-d",strtotime($strInvDate));
-			  
+			  $arrDataInv['invoice_vendor'] = $invoiceVendor;
 			  $this->saveInvoice($arrDataInv);
 			  
 			  $pdf = new TCPDF(PDF_PAGE_ORIENTATION, PDF_UNIT, PDF_PAGE_FORMAT, true, 'UTF-8', false);

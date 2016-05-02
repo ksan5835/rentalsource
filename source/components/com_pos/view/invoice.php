@@ -38,6 +38,7 @@ echo $objPage->generateNewInvoiceDocument($arrData,'pdf');
 ?>
 </div>
 <input type="hidden" name="client_id" id="client_id" value="<?php echo $cId; ?>" />
+<input type="hidden" name="txtSysVendor" id="txtSysVendor" value="common" />
 </form>
 <?php	
 }
@@ -103,6 +104,7 @@ echo $objPage->generateInvoiceDocument($arrData);
 ?>
 </div>
 <input type="hidden" name="client_id" id="client_id" value="<?php echo $cId; ?>" />
+<input type="hidden" name="txtSysVendor" id="txtSysVendor" value="common" />
 </form>
 
 <?php } ?>

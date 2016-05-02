@@ -54,6 +54,21 @@
 <h3>Invoice Details</h3>
 <table cellspacing="5">
 <tr><td><strong>Total Invoice</strong></td><td>:</td><td><?php echo $totInvoice;?></td></tr>
+<?php $arrsystemVendor = array("common","caltech","caltechravi","bhuvan","bhuvansankar","bhuvanarun","bhuvanvenkat","bhuvanmaha"); ?>
+<?php for($i=0;$i<count($arrsystemVendor);$i++){ ?>
+
+<?php 
+
+	$extraSql = "archive_status = 0 and invoice_vendor ='".$arrsystemVendor[$i]."'";
+	$totalPaymentDetails = $objPage->getRecordByCustomQuery("invoice_list",$field="sum(invoice_amount) as totamount",$extraSql);
+	$totalAmountIndividual = ($totalPaymentDetails) ? $totalPaymentDetails["totamount"] : 0;
+
+?>
+
+
+<tr><td><strong><?php echo $arrsystemVendor[$i];?></strong></td><td>:</td><td><?php echo $totalAmountIndividual;?></td></tr>
+<?php } ?>
+
 <tr><td class="highlight"><strong>Pending</strong></td><td>:</td><td><?php echo $pendingInvoiceCount;?></td></tr>
 <tr><td><strong>Partial</strong></td><td>:</td><td><?php echo $partialPaidInvoiceCount;?></td></tr>
 <tr><td><strong>Processed</strong></td><td>:</td><td><?php echo $paidInvoiceCount;?></td></tr>
