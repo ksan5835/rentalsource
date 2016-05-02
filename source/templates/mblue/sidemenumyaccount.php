@@ -37,58 +37,13 @@
 	
 	$totalpendingAmount = ($totalPaymentDetails["totamount"]) ? $totalPaymentDetails["totamount"] : "0";
 	
-	$cntsql = "rental_status = 'yes' and system_type = 'desktop' and trash_status='0'";
-	$desktopcount = $objPage->getCountRecords("system_details","sum(id",$cntsql);
-	
-	unset($totalSystemDetails);
-	$extraSql = "rental_status = 'yes' and system_type = 'desktop' and trash_status='0'";
-	$totalSystemDetails = $objPage->getRecordByCustomQuery("system_details",$field="sum(system_qty) as totCount",$extraSql);
-	$desktopcount = ($totalSystemDetails["totCount"]) ? $totalSystemDetails["totCount"] : "0";
-	
-	unset($totalSystemDetails);
-	$extraSql = "rental_status = 'yes' and system_type = 'laptop' and trash_status='0'";
-	$totalSystemDetails = $objPage->getRecordByCustomQuery("system_details",$field="sum(system_qty) as totCount",$extraSql);
-	$laptopCount = ($totalSystemDetails["totCount"]) ? $totalSystemDetails["totCount"] : "0";
-	
-	unset($totalSystemDetails);
-	$extraSql = "rental_status = 'yes' and system_type = 'printer' and trash_status='0'";
-	$totalSystemDetails = $objPage->getRecordByCustomQuery("system_details",$field="sum(system_qty) as totCount",$extraSql);
-	$printerCount = ($totalSystemDetails["totCount"]) ? $totalSystemDetails["totCount"] : "0";
-	
-	unset($totalSystemDetails);
-	$extraSql = "rental_status = 'yes' and system_type = 'ups' and trash_status='0'";
-	$totalSystemDetails = $objPage->getRecordByCustomQuery("system_details",$field="sum(system_qty) as totCount",$extraSql);
-	$upsCount = ($totalSystemDetails["totCount"]) ? $totalSystemDetails["totCount"] : "0";
-	
-	unset($totalSystemDetails);
-	$extraSql = "rental_status = 'yes' and system_type = 'monitor' and trash_status='0'";
-	$totalSystemDetails = $objPage->getRecordByCustomQuery("system_details",$field="sum(system_qty) as totCount",$extraSql);
-	$monitorCount = ($totalSystemDetails["totCount"]) ? $totalSystemDetails["totCount"] : "0";
-	
+		
 	unset($totalSystemDetailsNew);
-	$extraSql = "rental_status = 'yes' and system_type = 'desktop' and trash_status='0'";
+	$extraSql = "rental_status = 'yes' and trash_status='0'";
 	$totalSystemDetailsNew = $objPage->getRecordByCustomQuery("system_details",$field="sum(total_amount) as totCount",$extraSql);
-	$desktopcountPrice = ($totalSystemDetailsNew["totCount"]) ? $totalSystemDetailsNew["totCount"] : "0";
+	$totalRentalAmountTotal = ($totalSystemDetailsNew["totCount"]) ? $totalSystemDetailsNew["totCount"] : "0";
 	
-	unset($totalSystemDetailsNew);
-	$extraSql = "rental_status = 'yes' and system_type = 'laptop' and trash_status='0'";
-	$totalSystemDetailsNew = $objPage->getRecordByCustomQuery("system_details",$field="sum(total_amount) as totCount",$extraSql);
-	$laptopCountPrice = (totalSystemDetailsNew) ? $totalSystemDetailsNew["totCount"] : "0";
 	
-	unset($totalSystemDetailsNew);
-	$extraSql = "rental_status = 'yes' and system_type = 'printer' and trash_status='0'";
-	$totalSystemDetailsNew = $objPage->getRecordByCustomQuery("system_details",$field="sum(total_amount) as totCount",$extraSql);
-	$printerCountPrice = ($totalSystemDetailsNew["totCount"]) ? $totalSystemDetailsNew["totCount"] : "0";
-	
-	unset($totalSystemDetailsNew);
-	$extraSql = "rental_status = 'yes' and system_type = 'ups' and trash_status='0'";
-	$totalSystemDetailsNew = $objPage->getRecordByCustomQuery("system_details",$field="sum(total_amount) as totCount",$extraSql);
-	$upsCountPrice = (totalSystemDetailsNew) ? $totalSystemDetailsNew["totCount"] : "0";
-	
-	unset($totalSystemDetailsNew);
-	$extraSql = "rental_status = 'yes' and system_type = 'monitor' and trash_status='0'";
-	$totalSystemDetailsNew = $objPage->getRecordByCustomQuery("system_details",$field="sum(total_amount) as totCount",$extraSql);
-	$monitorCountPrice = (totalSystemDetailsNew) ? $totalSystemDetailsNew["totCount"] : "0";
 	
 	
 ?>
@@ -112,12 +67,26 @@
 <h3>Monthly Rental Income</h3>
 <table cellspacing="7" cellspacing="7" border="0">
 <tr><th>&nbsp;</th><th>&nbsp;</th><th>Total Amount</th></tr>
-<tr><td><strong>Total Desktop</strong></td><td><?php echo $desktopcount;?></td><td><?php echo "RS.".$desktopcountPrice; ?></td></tr>
-<tr><td ><strong>Total Laptop</strong></td><td><?php echo $laptopCount;?></td><td><?php echo "RS.".$laptopCountPrice; ?></td></tr>
-<tr><td><strong>Total Printer</strong></td><td><?php echo $printerCount;?></td><td><?php echo "RS.".$printerCountPrice; ?></td></tr>
-<tr><td><strong>Total UPS</strong></td><td><?php echo $upsCount;?></td><td><?php echo "RS.".$upsCountPrice; ?></td></tr>
-<tr><td><strong>Total Monitor</strong></td><td><?php echo $monitorCount;?></td><td><?php echo "RS.".$monitorCountPrice; ?></td></tr>
-<tr><td><h2>Net Income</h2></td><td>: </td><td><?php echo "<h2>RS.".($desktopcountPrice + $laptopCountPrice + $printerCountPrice + $upsCountPrice + $monitorCountPrice)."</h2>"; ?></td></tr>
+
+<?php $arrsystemVendor = array("caltech","caltechravi","bhuvan","bhuvansankar","bhuvanarun","bhuvanvenkat","bhuvanmaha"); ?>
+
+<?php for($i=0;$i<count($arrsystemVendor);$i++){ ?>
+
+<?php 
+
+	unset($totalSystemDetailsNew);
+	$extraSql = "rental_status = 'yes' and rental_vendor='".$arrsystemVendor[$i]."' and trash_status='0'";
+	$totalSystemDetailsNew = $objPage->getRecordByCustomQuery("system_details",$field="sum(total_amount) as totCount",$extraSql);
+	$totalRentalAmount = ($totalSystemDetailsNew["totCount"]) ? $totalSystemDetailsNew["totCount"] : "0";
+
+
+?>
+
+
+<tr><td><strong><?php echo $arrsystemVendor[$i];?></strong></td><td><?php echo $desktopcount;?></td><td><?php echo "RS.".$totalRentalAmount; ?></td></tr>
+<?php } ?>
+
+<tr><td><h2>Net Income</h2></td><td>: </td><td><?php echo "<h2>RS.".($totalRentalAmountTotal)."</h2>"; ?></td></tr>
 </table>
 </div>
 <div class="leftblock">

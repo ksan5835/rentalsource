@@ -52,6 +52,15 @@ $strInvNo = rand().date('m').$y;
 <tr><td width="20%"><b>Period</b></td><td><input type="text" name="invoiceperiod" size="50" /></td></tr>
 <tr><td width="20%"><b>Invoice Date</b></td><td><?php echo $strInvDate;?><input type="hidden" value="<?php echo $strInvDate;?>" name="invoicedate" size="50" /></td></tr>
 <tr><td width="20%"><b>Terms Of Payment</b></td><td><input type="text" name="billtypepayment" size="50" /></td></tr>
+<?php $arrsystemVendor = array("common","caltech","caltechravi","bhuvan","bhuvansankar","bhuvanarun","bhuvanvenkat","bhuvanmaha"); ?>
+<?php 
+	$strSystemVendor = "<select name='txtSysVendor' id='txtSysVendor'  >";
+	for($i=0;$i<count($arrsystemVendor);$i++){
+		$strSystemVendor .= "<option ".$selected." value='".$arrsystemVendor[$i]."'>".$arrsystemVendor[$i]."</option>";
+	}
+	$strSystemVendor .= "</select>";
+?>
+<tr><td width="20%"><b>Invoice Owner</b></td><td><?php echo $strSystemVendor;?></td></tr>
 <tr><td colspan="2" align="right"><input type="button" name="btn_addnew" class="addnewrow" value="Add New Row" /></td></tr>
 <tr><td colspan="2">
 

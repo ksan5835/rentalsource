@@ -49,10 +49,36 @@ if($countRec['totQty']){
 </div>
 
 <h3>System Information</h3>
-<div align="right" style="float:right;"><input type="button" value="Add New" class="rstpwd"/></div>
+<?php $arrsystemVendor = array("caltech","caltechravi","bhuvan","bhuvansankar","bhuvanarun","bhuvanvenkat","bhuvanmaha"); ?>
+<table>
+<tr>
+<?php for($i=0;$i<count($arrsystemVendor);$i++){ ?>
+
+<?php
+
+	unset($totalSystemDetailsNew);
+	$extraSql = "rental_status = 'yes' and client_id ='".$cId."' and rental_vendor='".$arrsystemVendor[$i]."' and trash_status='0'";	
+	$totalSystemDetailsNew = $objPage->getRecordByCustomQuery("system_details",$field="sum(total_amount) as totCount",$extraSql);
+	$totalRentalAmount = ($totalSystemDetailsNew["totCount"]) ? $totalSystemDetailsNew["totCount"] : "0";
+
+?>
+
+<td><b><?php echo $arrsystemVendor[$i];?>:&nbsp;</b><?php echo $totalRentalAmount;?> &nbsp;|&nbsp;</td>
+<?php } ?>
+</tr>
+</table>
+
+<table width="100%">
+<tr><td><a href="index.php?option=com_pos&view=invoice&cid=<?php echo $cId;?>">View Invoice</a></td>
+<td align="right"><input type="button" value="Add New" class="rstpwd"/></td>
+</tr>
+</table>
+
+
+
 <div style="clear:both;height:10px;"></div>
 <table id="example" class="display" width="100%">
-<thead><th width="5%">S.No</th><th>System Type</th><th>Qty</th><th>Unit Rent</th><th>Sub Total</th><th width="10%">Last Update</th><th width="10%">View / Edit</th><th width="10%">Delete</th></thead><tbody>
+<thead><th width="5%">S.No</th><th>System Type</th><th>Sys Vendor</th><th>Qty</th><th>Unit Rent</th><th>Sub Total</th><th width="10%">Last Update</th><th width="10%">View / Edit</th><th width="10%">Delete</th></thead><tbody>
 <?php
 
 $extraquery = "rental_status='yes'";
@@ -68,7 +94,7 @@ if($clientSysDet)
 		$strTotal = $strTotal + $strSubTot;
 		$strlastDate = date("d-m-Y", strtotime($clientSysDet[$i]['last_update_date']));
 		
-		echo '<tr><td>'.($i + 1).'</td><td>'.$clientSysDet[$i]['system_type'].' - '.$clientSysDet[$i]['short_description'].'</td><td>'.$strQty.'</td><td>'.$strUnitRent.'</td><td>'.number_format($strSubTot,2).'</td><td>'.$strlastDate.'</td><td align="center"><img src="'.SITE_ROOT.'/templates/mblue/images/edit.jpg" style="height:12px;width:12px;cursor:pointer;" class="edit" datgid="'.$clientSysDet[$i]['id'].'"  /></td><td align="center"><img src="'.SITE_ROOT.'/templates/mblue/images/delete.jpg" style="height:12px;width:12px;cursor:pointer;" class="delete" datgid="'.$clientSysDet[$i]['id'].'" /></td></tr>';
+		echo '<tr><td>'.($i + 1).'</td><td>'.$clientSysDet[$i]['system_type'].' - '.$clientSysDet[$i]['short_description'].'</td><td>'.$clientSysDet[$i]['rental_vendor'].'</td><td>'.$strQty.'</td><td>'.$strUnitRent.'</td><td>'.number_format($strSubTot,2).'</td><td>'.$strlastDate.'</td><td align="center"><img src="'.SITE_ROOT.'/templates/mblue/images/edit.jpg" style="height:12px;width:12px;cursor:pointer;" class="edit" datgid="'.$clientSysDet[$i]['id'].'"  /></td><td align="center"><img src="'.SITE_ROOT.'/templates/mblue/images/delete.jpg" style="height:12px;width:12px;cursor:pointer;" class="delete" datgid="'.$clientSysDet[$i]['id'].'" /></td></tr>';
 	}
 	//echo '<tr><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>Total</td><td>'.number_format($strTotal,2).'</td><td>&nbsp;</td></tr>';
 	

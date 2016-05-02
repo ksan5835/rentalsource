@@ -212,6 +212,7 @@ class possale {
 		$arrInsert['last_update_date'] = date("Y-m-d H:i:s");
 		$arrInsert['profile_type'] = $_SESSION['sprofile'];
 		$arrInsert['total_amount'] = $arrData['txtUnitRent'] * $arrData['txtQty'];
+		$arrInsert['rental_vendor'] = $arrData['txtSysVendor'];
 				
 		if(@$arrData['recid'] > 0)
 		{	
@@ -661,6 +662,7 @@ class possale {
 			  $arrDataInv['invoice_date'] = date("Y-m-d",strtotime($strInvDate));
 			  $arrDataInv['invoice_html_disp'] = $strMainTable;
 			  $arrDataInv['invoice_in_details'] = $arrData['billto'].":".$arrData['billtoaddress'].":".$arrData['billcontactno'];
+			  $arrDataInv['invoice_vendor'] = $arrData['txtSysVendor'];
 
 				$this->saveInvoice($arrDataInv);
 			  
