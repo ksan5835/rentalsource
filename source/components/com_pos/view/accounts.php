@@ -31,7 +31,7 @@ $cDetails = $objPage->getClientDetailsById($cId);
 <div align="right" style="float:left;padding-left:530px;"><a href='index.php?option=com_pos&view=cheque_details'><input type="button" value="Cheque Details"/></a></div>
 <div style="clear:both;height:10px;"></div>
 <table id="example" class="display" width="100%">
-<thead><th width="5%">S.No</th><th>Description</th><th style="width:15%">Date</th><th style="width:15%">Amount</th><th style="width:15%">Transation Type</th><th>Edit</th></thead><tbody>
+<thead><th width="5%">S.No</th><th>Description</th><th>Invoice to</th><th style="width:15%">Date</th><th style="width:15%">Amount</th><th style="width:15%">Transation Type</th><th>Edit</th></thead><tbody>
 <?php
 
 $extraquery = "rec_active_status=1";
@@ -47,6 +47,7 @@ if($entryLists)
 		echo '<tr>';
 		echo '<td>'.($i + 1).'</td>';
 		echo '<td>'.$entryLists[$i]['description'].'</td>';
+		echo '<td>'.$entryLists[$i]['invoice_vendor'].'</td>';
 		echo '<td>'.$exDate.'</td>';
 		echo '<td>Rs.'.$entryLists[$i]['entry_amount'].'</td>';
 		echo '<td>'.$entryLists[$i]['cash_type'].'</td>';

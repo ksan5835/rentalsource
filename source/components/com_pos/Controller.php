@@ -956,6 +956,13 @@ class com_pos_Controller {
 		}
 		$strPaymentType .= "</select>";
 		
+		//invoice vendor
+		$arrsystemVendor = array("common","caltech","caltechravi","bhuvan","bhuvansankar","bhuvanarun","bhuvanvenkat","bhuvanmaha");
+		$strSystemVendor = "<select name='invoice_vendor' id='invoice_vendor'  >";
+		for($i=0;$i<count($arrsystemVendor);$i++){
+			$strSystemVendor .= "<option ".$selected." value='".$arrsystemVendor[$i]."'>".$arrsystemVendor[$i]."</option>";
+		}
+		$strSystemVendor .= "</select>";
 		
 		//arrbuidldrop['optiondata'] = array("cash","cheque");
 		//$arrbuidldrop['name'] = "payment_type";
@@ -968,6 +975,7 @@ class com_pos_Controller {
 		$strReturn ='
 		<table>	
 		<tr><td>Entry Date:</td><td><input type="text" class="textinputcommon" name="expense_date" value="'.$exp_date.'" /></td></tr>
+		<tr><td>Invoice Vendor</td><td>'.$strSystemVendor.'</td></tr>
 		<tr><td>Entry Type</td><td>'.$strExpensType.'</td></tr>
 		<tr><td>Entry Category</td><td>'.$strEntryType.'</td></tr>
 		<tr><td>Description:</td><td><input type="text" class="textinputcommon" name="description" value="'.$cDetails['description'].'" /></td></tr>
