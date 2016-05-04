@@ -66,6 +66,26 @@
 <div class="leftblock">
 <h3>Account Details</h3>
 <table cellspacing="5">
+<?php $arrsystemVendor = array("common","caltech","caltechravi","bhuvan","bhuvansankar","bhuvanarun","bhuvanvenkat","bhuvanmaha"); ?>
+
+<?php for($i=0;$i<count($arrsystemVendor);$i++){ ?>
+<?php 
+
+	$extraSql = "rec_active_status = 1 and cash_type = 'credit' and invoice_vendor ='".$arrsystemVendor[$i]."'";
+	$totalPaymentDetails = $objPage->getRecordByCustomQueryNew("account_managment",$field="sum(entry_amount) as totamount",$extraSql);		
+	$totalincomeindividual = ($totalPaymentDetails["totamount"]) ? $totalPaymentDetails["totamount"] : "0";
+
+?>
+
+
+<tr><td><strong><?php echo $arrsystemVendor[$i];?> Income</strong></td><td>:</td><td>Rs.<?php echo $totalincomeindividual;?></td></tr>
+
+<?php } ?>
+</table>
+<br />
+<br />
+
+<table cellspacing="5">
 <tr><td><strong>Total Income</strong></td><td>:</td><td>Rs.<?php echo $totalIncome;?></td></tr>
 <tr><td><strong>Income By Cash</strong></td><td>:</td><td>Rs.<?php echo $totIncomebyCash;?></td></tr>
 <tr><td><strong>Income By Cheque</strong></td><td>:</td><td>Rs.<?php echo $totincomebycheque;?></td></tr>
