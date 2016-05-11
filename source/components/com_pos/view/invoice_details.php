@@ -46,18 +46,29 @@ include_once(SERVER_ROOT . '/lib/userdata.php');
 ?>
 
 <div align="right" style="float:right;">
-Filter: 
-<select onchange="javascript:changestatus(this.value)">
+ 
+<form name="frmgetreprot" method="post" action="index.php?option=com_pos&task=dwlinvoicereport">
+<table>
+<tr>
+<td>Filter</td>
+<td>
+<select name="paystatus" onchange="javascript:changestatus(this.value)">
 <?php for($i=0;$i<$totCount;$i++){  ?>
 <?php $selected = ($seStatus == $arrStatus[$i]) ? 'selected = "selected"' : ""; ?>
 <option value="<?php echo $arrStatus[$i];?>" <?php echo $selected;?>><?php echo ucfirst($arrStatus[$i]);?></option>
 <?php } ?>
 </select>
-
+</td>
+<td>
+<input type="submit" value="Download Report" />
+</td>
+</tr>
+</table>
+</form>
 </div>
 <div style="clear:both;height:10px;"></div>
 <table id="example" class="display" width="100%">
-<thead><th width="5%">S.No</th><th width="10%">Client ID</th><th>Organisation</th><th width="15%">Invoice Period</th><th width="10%">Invoice Amount</th><th width="5%">Invoice_Date</th><th>Payment Status</th><th width="10%">View</th><th width="10%">Trash</th></thead><tbody>
+<thead><th width="5%">S.No</th><th>Organisation</th><th width="15%">Invoice Period</th><th width="10%">Invoice Amount</th><th width="5%">Invoice_Date</th><th>Payment Status</th><th width="10%">View</th><th width="10%">Expected Date</th><th width="10%">Trash</th></thead><tbody>
 <?php
 
 $extrasql = ($seStatus) ? " payment_status ='".$seStatus."'" : "";
@@ -84,8 +95,7 @@ if($invoiceLists)
 		
 
 		echo '<tr>';
-		echo '<td>'.($i + 1).'</td>';
-		echo '<td>'.$clientId.'</td>';
+		echo '<td>'.($i + 1).'</td>';		
 		echo '<td>'.$clientname.'</td>';
 		echo '<td>'.$invoiceLists[$i]['invoice_period'].'</td>';
 		echo '<td>'.$invoiceLists[$i]['invoice_amount'].'</td>';
@@ -96,8 +106,10 @@ if($invoiceLists)
 		}else{
 			echo '<td><a href="index.php?option=com_pos&view=invoice&cid='.$invoiceLists[$i]['client_id'].'&vid='.$invoiceLists[$i]['id'].'">View</a></td>';
 		}
-		
+		echo '<td><input type= "text" class="fcomments" dataid="'.$invoiceLists[$i]['id'].'" value="'.$invoiceLists[$i]['comments'].'" /></td>';
 		echo '<td><input type= "checkbox" class="intrash" value="'.$invoiceLists[$i]['id'].'" /></td>';
+		
+		
 		echo '</tr>';
 	}
 }
@@ -163,6 +175,21 @@ if($invoiceLists)
 	});	
 
 	
+	
+	jQuery('.fcomments').change(function(){	
+	
+		var exComments  = jQuery(this).val();
+		var rId = jQuery(this).attr("dataid");	
+		jQuery.post("index.php?option=com_pos&task=updateexpcomments", { recid: rId,expcomments: exComments  },
+			  function(data) {						
+				//alert("Invoice moved to trash Successfully");
+													
+			  });
+	  
+	});	
+	
+	
+	
 	/*jQuery('.edit').click(function(){		
 		
 		var uId = jQuery(this).attr("datgid");	
@@ -186,7 +213,7 @@ if($invoiceLists)
 <div class="ldform"></div>
 </form>
 <script language="javascript">
-	getUserForm(0);
+	//getUserForm(0);
 </script>
 </div>
 <?php include_once(SERVER_ROOT . '/templates/mblue/footer.html'); ?>

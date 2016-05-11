@@ -183,6 +183,12 @@ class com_pos_Controller {
 			case "downacclastreport": 
 				$this->downloadAccountLastReport($_POST);
 			break;
+			case "dwlinvoicereport": 
+				$this->downloadClientInvoiceReportByStatus($_POST);
+			break;
+			case "updateexpcomments":
+				$this->InvoiceExpCommentsbyidById($_POST);
+			break;
 		
 		}
 		
@@ -199,6 +205,15 @@ class com_pos_Controller {
 		
 		
 	}
+	
+	function InvoiceExpCommentsbyidById($arrData)
+	{
+		$recID = $arrData['recid'];
+		$exComments = $arrData['expcomments'];
+		$objPage = new possale();
+        $objPage->updateInvoiceExpectedComments($recID,$exComments);
+	}
+	
 	
 	function trashInvoiceById($arrData)
 	{
@@ -304,6 +319,56 @@ class com_pos_Controller {
 		  die;
 
 		
+	}
+	
+	
+	function downloadClientInvoiceReportByStatus($arrData)
+	{
+		$objPage = new possale();	
+		$seStatus = $_POST['paystatus'];
+		
+		$strReturnText = '<table border="1" width="100%">';
+		$strReturnText .= '<tr><th width="5%">S.No</th><th>Organisation</th><th width="10%">Invoice Amount</th><th width="5%">Invoice_Date</th><th>Payment Status</th><th>Expected Date</th></tr>';
+		
+
+		$extrasql = ($seStatus) ? " payment_status ='".$seStatus."'" : "";
+		@$invoiceLists = $objPage->getInvoiceLists($extrasql);
+	
+	
+	
+		if($invoiceLists)
+		{
+			for($i=0;$i<count(@$invoiceLists);$i++)
+			{
+				
+				$exSql = " id = ".$invoiceLists[$i]['client_id'];
+				$clientDetails = $objPage->getRecordByCustomQuery("client","client_name,client_id,organisation",$exSql);		
+				$clientId = $clientDetails['client_id'];
+				if($invoiceLists[$i]['client_id']){
+					$clientname = $clientDetails['client_name']." - ".$clientDetails['organisation'];
+				}else{					
+					$ex_invoice_indetails = explode(':',$invoiceLists[$i]['invoice_in_details']);
+					$clientname = $ex_invoice_indetails[0];	
+					$clientId = 'CRS00'.$invoiceLists[$i]['id'];
+				}				
+		
+				$strReturnText .=  '<tr>';
+				$strReturnText .=  '<td>'.($i + 1).'</td>';
+				$strReturnText .=  '<td>'.$clientname.'</td>';
+				$strReturnText .=  '<td>'.$invoiceLists[$i]['invoice_amount'].'</td>';
+				$strReturnText .=  '<td>'.$invoiceLists[$i]['invoice_date'].'</td>';
+				$strReturnText .=  '<td>'.ucfirst($invoiceLists[$i]['payment_status']).'</td>';	
+				$strReturnText .=  '<td>'.$invoiceLists[$i]['comments'].'</td>';			
+				$strReturnText .=  '</tr>';
+			}
+		}
+		$strReturnText .= "</table>";
+		
+		header("Content-type: application/vnd.ms-excel");
+		header("Content-Disposition: attachment;Filename=Accounts_Report.xls");
+		echo $strReturnText;
+		
+		die;
 	}
 	
 	

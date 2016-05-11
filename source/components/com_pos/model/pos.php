@@ -1004,6 +1004,12 @@ class possale {
 		$query = mysql_query("update ".TBL_PREFIX."invoice_list set archive_status='1' where id = ".$recID);
 	}
 	
+	public function updateInvoiceExpectedComments($recID,$comments)
+	{
+		$query = mysql_query("update ".TBL_PREFIX."invoice_list set comments='".$comments."' where id = ".$recID);
+	}
+	
+	
 	public function updateServiceTrashStatus($recID)
 	{
 		$query = mysql_query("update ".TBL_PREFIX."new_service set archive_status='1' where id = ".$recID);
