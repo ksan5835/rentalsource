@@ -65,23 +65,32 @@
 
 <div class="leftblock">
 <h3>Account Details</h3>
-<table cellspacing="5">
+
 <?php $arrsystemVendor = array("common","caltech","caltechravi","bhuvan","bhuvansankar","bhuvanarun","bhuvanvenkat","bhuvanmaha"); ?>
 
 <?php for($i=0;$i<count($arrsystemVendor);$i++){ ?>
+
+<table cellspacing="5" style="border:1px solid #ff0000;" width="100%">
 <?php 
 
 	$extraSql = "rec_active_status = 1 and cash_type = 'credit' and invoice_vendor ='".$arrsystemVendor[$i]."'";
 	$totalPaymentDetails = $objPage->getRecordByCustomQueryNew("account_managment",$field="sum(entry_amount) as totamount",$extraSql);		
 	$totalincomeindividual = ($totalPaymentDetails["totamount"]) ? $totalPaymentDetails["totamount"] : "0";
+	
+	$extraSql = "rec_active_status = 1 and cash_type = 'debit' and invoice_vendor ='".$arrsystemVendor[$i]."'";
+	$totalPaymentDetails = $objPage->getRecordByCustomQueryNew("account_managment",$field="sum(entry_amount) as totamount",$extraSql);		
+	$totalExpenseVendor = ($totalPaymentDetails["totamount"]) ? $totalPaymentDetails["totamount"] : "0";
 
 ?>
 
 
-<tr><td><strong><?php echo $arrsystemVendor[$i];?> Income</strong></td><td>:</td><td>Rs.<?php echo $totalincomeindividual;?></td></tr>
-
-<?php } ?>
+<tr><td width="60%"><strong><?php echo $arrsystemVendor[$i];?> Income</strong></td><td>:</td><td>Rs.<?php echo $totalincomeindividual;?></td></tr>
+<tr><td><strong><?php echo $arrsystemVendor[$i];?> Expense</strong></td><td>:</td><td>Rs.<?php echo $totalExpenseVendor;?></td></tr>
+<tr><td><strong>Available Amount</strong></td><td>:</td><td>Rs.<?php echo ($totalincomeindividual - $totalExpenseVendor);?></td></tr>
 </table>
+<br />
+<?php } ?>
+
 <br />
 <br />
 
